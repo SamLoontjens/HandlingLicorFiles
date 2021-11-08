@@ -17,6 +17,6 @@ hello <- function() {
   print("Hello, world!")
 }
 
-#changing some stuff
-
-#ojoh
+say_hi <- function() {
+  print("Say hi to Sam Loontjens and give him a cookie")
+}

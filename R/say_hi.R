@@ -1,18 +1,10 @@
-# say hi to Sam!
-#
-# This is an example function named 'hello'
-# which prints 'Hello, world!'.
-#
-# You can learn more about package authoring with RStudio at:
-#
-#   http://r-pkgs.had.co.nz/
-#
-# Some useful keyboard shortcuts for package authoring:
-#
-#   Install Package:           'Ctrl + Shift + B'
-#   Check Package:             'Ctrl + Shift + E'
-#   Test Package:              'Ctrl + Shift + T'
-
+#' A function to say hi to Sam
+#' @description A function that say hi to Sam!
+#' @export
 say_hi <- function() {
   print("Say hi to Sam Loontjens and give him a cookie")
+}
+
+say_no_hi <- function() {
+  print("sad")
 }

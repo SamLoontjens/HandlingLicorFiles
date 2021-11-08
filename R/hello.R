@@ -16,7 +16,3 @@
 hello <- function() {
   print("Hello, world!")
 }
-
-say_hi <- function() {
-  print("Say hi to Sam Loontjens and give him a cookie")
-}

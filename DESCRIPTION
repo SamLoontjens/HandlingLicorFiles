@@ -9,11 +9,11 @@ Description:
     Makes it easy to make light response curves and photosynthetic induction curves
 Depends:
 Imports:
-    readxl,
-    ggplot2
+    readxl
 Suggests:
     devtools,
-    roxygen2
+    roxygen2,
+    ggplot2
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true

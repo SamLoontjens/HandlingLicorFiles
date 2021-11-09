@@ -1,11 +1,19 @@
 Package: HandlingLicorFiles
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Title: Handling LI-6400 and LI-6800 output files
+Version: 0.1.1
+Author: Sam Loontjens <loontjenssam@gmail.com>
+Maintainer: Sam Loontjens <loontjenssam@gmail.com>
+Description: 
+    This package is designed to handle licor file outputs.
+    Makes it easy to make light response curves and photosynthetic induction curves
+Depends:
+Imports:
+    readxl,
+    ggplot2
+Suggests:
+    devtools,
+    roxygen2
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true

@@ -12,6 +12,7 @@
 #'   Install Package:           'Ctrl + Shift + B'
 #'   Check Package:             'Ctrl + Shift + E'
 #'   Test Package:              'Ctrl + Shift + T'
+#'   Documentation              'Ctrl + Shift + D' (requires Roxygen)
 #'
 #' @description A function that says Hello, world!
 #' @param

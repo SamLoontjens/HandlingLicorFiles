@@ -12,3 +12,5 @@ To use this package;
 -Install this package                   $ install.github("SamLoontjens/HandlingLicorFiles")
 
 Note: The dollar sign $ means run in the R Console.
+
+To see future plans check our Trello:   https://trello.com/handlinglicorfiles

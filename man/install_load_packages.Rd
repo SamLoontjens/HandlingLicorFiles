@@ -4,7 +4,7 @@
 \alias{install_load_packages}
 \title{A function that installs packages.}
 \usage{
-install_load_packages(packages = c("ggplot2", "readxl", "rstudioapi"))
+install_load_packages(packages)
 }
 \arguments{
 \item{packages}{A list of packages that have to be installed and loaded}

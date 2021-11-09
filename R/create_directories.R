@@ -7,7 +7,6 @@
 #'   input_directory_licorfiles/photosynthetic_induction_data for
 #'   induction curves.
 #' @author Sam Loontjens
-#' @param
 #' @export
 #' @return Nothing
 #' @examples create_directories()

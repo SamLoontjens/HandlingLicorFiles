@@ -2,7 +2,6 @@
 #'
 #' @description A function that prints a guide for the user.
 #' @author Sam Loontjens
-#' @param
 #' @export
 #' @return Nothing
 #' @examples guide()

@@ -15,7 +15,6 @@
 #'   Documentation              'Ctrl + Shift + D' (requires Roxygen)
 #'
 #' @description A function that says Hello, world!
-#' @param
 #' @export
 #' @return Nothing
 #' @examples hello()

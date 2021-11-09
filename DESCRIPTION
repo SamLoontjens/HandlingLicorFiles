@@ -1,7 +1,7 @@
 Package: HandlingLicorFiles
 Type: Package
 Title: Handling LI-6400 and LI-6800 output files
-Version: 0.1.1
+Version: 0.1.2
 Author: Sam Loontjens <loontjenssam@gmail.com>
 Maintainer: Sam Loontjens <loontjenssam@gmail.com>
 Description: 

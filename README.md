@@ -29,6 +29,6 @@ Sam Loontjens
 
 The contributers are;
 Sam Loontjens
-=======
+
 To see future plans check our Trello:   https://trello.com/handlinglicorfiles
->>>>>>> 6714c14e4dcf5ced2a2f1d4e7dbe0f833a036de8
+

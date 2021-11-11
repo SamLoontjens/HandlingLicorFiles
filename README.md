@@ -27,14 +27,14 @@ $ devtools::install_github("SamLoontjens/HandlingLicorFiles")
 ```
 $ library(HandlingLicorFiles)
 ```
-[^1]: The dollar sign $ means run in the R Console or in a script.
+[^1]: The dollar sign '$' means run in the R Console or in a script, so don't copy the dollar sign!
 
 Now you can use all the functions!
 Try the function say_hi;
 ```
 $ say_hi()
 ```
-If you want to see what all the functions are try the help function;
+If you want to see all the functions try the help function;
 ```
 $ help(package = "HandlingLicorFiles")
 ```

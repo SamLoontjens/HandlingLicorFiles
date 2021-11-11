@@ -29,7 +29,15 @@ $ library(HandlingLicorFiles)
 ```
 [^1]: The dollar sign $ means run in the R Console or in a script.
 
-Now you can use all the functions! like say_hi()
+Now you can use all the functions!
+Try the function say_hi;
+```
+$ say_hi()
+```
+If you want to see what all the functions are try the help function;
+```
+$ help(package = "HandlingLicorFiles")
+```
 
 How you can help this project;\
 Ask Sam Loontjens for permission.

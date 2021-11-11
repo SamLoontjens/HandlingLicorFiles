@@ -1,4 +1,6 @@
-'##HandlingLicorFiles'
+## HandlingLicorFiles
+
+'## HandlingLicorFiles'
 
 Description;\
 This is a package for handling Li-6400 and Li-6800 output files for data analysis.
@@ -11,31 +13,27 @@ How you can get started with this R package;
 - Install the latest Rtools version (I'm not sure if this is recuired)               https://cran.rstudio.com/bin/windows/Rtools/
 - Install the latest Rstudio version (recommended)   https://www.rstudio.com/products/rstudio/download/
 
-In R studio do the following;
-- Install latest Devtools package        
+In R studio run the following lines;
+- Install the latest devtools package        
 ```
-$ install.packages("Devtools")
-```
-- Load Devtools package     
-```
-$ library(Devtools)
+$ install.packages("devtools")
 ```
 - Install this package 
 ```
-$ install_github("SamLoontjens/HandlingLicorFiles")
+$ devtools::install_github("SamLoontjens/HandlingLicorFiles")
 ```
 - Load this package                      
 ```
 $ library(HandlingLicorFiles)
 ```
-Now you can use all the functions! like say_hi()
+Note: The dollar sign $ means run in the R Console or in a script.
 
-Note: The dollar sign $ means run in the R Console.
+Now you can use all the functions! like say_hi()
 
 How you can get help with this project;\
 Ask Sam Loontjens for permission.
 
-This project is maintained by;\ 
+This project is maintained by;\
 Sam Loontjens
 
 The contributers are;\

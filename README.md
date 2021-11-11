@@ -12,13 +12,25 @@ This package lets you use a bunch of extra functions. It can make plotting and a
 How you can get started with this R package;
 - Install the latest R version                     https://cran.r-project.org/
 - Install the latest Rtools version (I'm not sure if this is recuired)               https://cran.rstudio.com/bin/windows/Rtools/
- - Install the latest Rstudio version (recommended)   https://www.rstudio.com/products/rstudio/download/
-
- - Install latest Devtools package        $ install.packages("Devtools")
- - Load Devtools package                  $ library(Devtools)
- - Install this package                   $ install.github("SamLoontjens/HandlingLicorFiles")
- - Load this package                      $ library(HandlingLicorFiles)
- Now you can use all te functions!
+- Install the latest Rstudio version (recommended)   https://www.rstudio.com/products/rstudio/download/
+In R studio do the following;
+- Install latest Devtools package        
+```
+$ install.packages("Devtools")
+```
+- Load Devtools package     
+```
+$ library(Devtools)
+```
+- Install this package 
+```
+$ install.github("SamLoontjens/HandlingLicorFiles")
+```
+- Load this package                      
+```
+$ library(HandlingLicorFiles)
+```
+Now you can use all te functions!
 
 Note: The dollar sign $ means run in the R Console.
 
@@ -28,7 +40,7 @@ Ask Sam Loontjens for permission.
 ```
 
 This project is maintained by; 
-Sam Loontjens
+  Sam Loontjens
 
 The contributers are;
 Sam Loontjens

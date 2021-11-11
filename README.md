@@ -11,23 +11,23 @@ How you can get started with this R package;
   https://cran.r-project.org/
 - Install the latest Rtools version (I'm not sure if this is recuired)\
   https://cran.rstudio.com/bin/windows/Rtools/
-- Install the latest Rstudio version (recommended)
+- Install the latest Rstudio version (recommended)\
   https://www.rstudio.com/products/rstudio/download/
 
-In R studio run the following lines;
+In R studio do the following by running the correct lines;
 - Install the latest devtools package        
 ```
-$ install.packages("devtools")
+$[^1] install.packages("devtools")
 ```
 - Install this package 
 ```
-$ devtools::install_github("SamLoontjens/HandlingLicorFiles")
+$[^1] devtools::install_github("SamLoontjens/HandlingLicorFiles")
 ```
 - Load this package                      
 ```
-$ library(HandlingLicorFiles)
+$[^1] library(HandlingLicorFiles)
 ```
-Note: The dollar sign $ means run in the R Console or in a script.
+[^1]: The dollar sign $ means run in the R Console or in a script.
 
 Now you can use all the functions! like say_hi()
 

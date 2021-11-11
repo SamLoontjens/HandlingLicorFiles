@@ -17,17 +17,17 @@ How you can get started with this R package;
 In R studio do the following by running the correct lines;
 - Install the latest devtools package        
 ```
-$[^1] install.packages("devtools")
+$ install.packages("devtools")
 ```
 - Install this package 
 ```
-$[^1] devtools::install_github("SamLoontjens/HandlingLicorFiles")
+$ devtools::install_github("SamLoontjens/HandlingLicorFiles")
 ```
 - Load this package                      
 ```
-$[^1] library(HandlingLicorFiles)
+$ library(HandlingLicorFiles)
 ```
-[^1]: The dollar sign $ means run in the R Console or in a script.
+[^note]: The dollar sign $ means run in the R Console or in a script.
 
 Now you can use all the functions! like say_hi()
 

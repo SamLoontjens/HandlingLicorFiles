@@ -1,7 +1,5 @@
 ## HandlingLicorFiles
 
-'## HandlingLicorFiles'
-
 Description;\
 This is a package for handling Li-6400 and Li-6800 output files for data analysis.
 
@@ -12,8 +10,9 @@ How you can get started with this R package;
 - Install the latest R version\
   https://cran.r-project.org/
 - Install the latest Rtools version (I'm not sure if this is recuired)\
-https://cran.rstudio.com/bin/windows/Rtools/
-- Install the latest Rstudio version (recommended)   https://www.rstudio.com/products/rstudio/download/
+  https://cran.rstudio.com/bin/windows/Rtools/
+- Install the latest Rstudio version (recommended)
+  https://www.rstudio.com/products/rstudio/download/
 
 In R studio run the following lines;
 - Install the latest devtools package        

@@ -41,6 +41,14 @@ $ help(package = "HandlingLicorFiles")
 
 How you can help this project;\
 Ask Sam Loontjens for permission.
+- Install the latest git\
+https://git-scm.com/downloads
+- Make a github account
+https://github.com/
+- Download the repository
+- Make a branch
+- Commit changes
+- Make a pull request
 
 This project is maintained by;\
 Sam Loontjens

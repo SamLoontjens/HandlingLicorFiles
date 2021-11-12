@@ -6,7 +6,7 @@
 #'   It slits the path into directories and the filename.
 #'   It splits the filename into name parameters.
 #'   It makes a title for the plots.
-#'   It fits the data using other functions
+#'   It fits the data using other functions.
 #'   It returns a list of the list of name parameters and the list of fitted
 #'   parameters.
 #' @author Sam Loontjens
@@ -18,7 +18,7 @@
 #' the fitted light response parameters
 #' @examples
 #' pathname <- "input_directory_licorfiles/light_response_data/
-#'              20210226 PI 50-100 75RH 400CO2 T.xlsx"
+#'              20210226 LRC NA 75RH 400CO2 T.xlsx"
 #' list_of_parameters <- calculate_light_response_parameters(pathname)
 #'
 calculate_light_response_parameters <- function(pathname, manual_check = TRUE) {

@@ -16,7 +16,7 @@
 #' @return
 #' Returns a dataframe with all the parameters.
 #' @examples
-#' mydata <- calculate_all_light_response_parameters
+#' mydata <- calculate_all_light_response_parameters()
 #'
 calculate_all_light_response_parameters <- function(manual_check = TRUE) {
 

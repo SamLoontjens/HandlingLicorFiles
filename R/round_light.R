@@ -15,7 +15,7 @@
 round_light <- function(dataframe){
 
   #find if there is PAR or Qin to round
-  dataframe$Qin <- round_parameter(dataframe, "Qin")
+  dataframe$Qin <- round_parameter(dataframe$Qin)
 
   return(dataframe)
 }

@@ -26,20 +26,20 @@
 #' @return
 #'   Returns a list of the check state, Ci1, Ci2, deltaCi, other constands
 #' @examples
-#'   parameters <- fit_photosynthetic_induction_Ci_curve(mydata,
+#'   parameters <- fit_photosynthetic_induction_Ci_curve(dataframe,
 #'                                                      "data from today")
 #'
-fit_photosynthetic_induction_Ci_curve <- function(mydata, title = "PI Ci curve",
+fit_photosynthetic_induction_Ci_curve <- function(dataframe, title = "PI Ci curve",
                                                   mean_width = 50, fit_width = 0,
                                                   manual_check = TRUE){
   #get light parameters
-  lightinductionparameters <- calculate_lightinductionparameters(mydata)
+  lightinductionparameters <- calculate_light_induction_parameters(dataframe)
   lightinductionindex = lightinductionparameters[[1]]
   start_index = lightinductionparameters[[2]] #unused
-  end_index = length(mydata$Ci)
+  end_index = length(dataframe$Ci)
 
   #calculate input parameters C1
-  Ci1 <- mean(mydata$Ci[(lightinductionindex-mean_width):lightinductionindex])
+  Ci1 <- mean(dataframe$Ci[(lightinductionindex-mean_width):lightinductionindex])
 
   #find the right range for fitting
   if (fit_width < mean_width) {
@@ -50,31 +50,31 @@ fit_photosynthetic_induction_Ci_curve <- function(mydata, title = "PI Ci curve",
 
   #calculate input parameter C3
   if (fit_width < mean_width) {
-    Ci3 <- mean(mydata$Ci[(end_index-mean_width):(end_index)])
+    Ci3 <- mean(dataframe$Ci[(end_index-mean_width):(end_index)])
   } else {
-    Ci3 <- mean(mydata$Ci[(lightinductionindex+fit_width-mean_width):(lightinductionindex+fit_width)])
+    Ci3 <- mean(dataframe$Ci[(lightinductionindex+fit_width-mean_width):(lightinductionindex+fit_width)])
   }
 
   #get t and y after the lightinductionindex
-  t <- mydata$elapsed[fit_range]-mydata$elapsed[lightinductionindex]
-  y <- mydata$Ci[fit_range]
+  t <- dataframe$elapsed[fit_range]-dataframe$elapsed[lightinductionindex]
+  y <- dataframe$Ci[fit_range]
 
   #set start parameters
-  Ci2 = min(mydata$Ci)
+  Ci2 = min(dataframe$Ci)
   k1 = 0.1
   k2 = 0.2
   t0 = 0.5 * (end_index-lightinductionindex)
 
   if (manual_check) {
     #plot the raw data
-    plot(mydata$elapsed[1:end_index], mydata$Ci[1:end_index], main = title)
+    plot(dataframe$elapsed[1:end_index], dataframe$Ci[1:end_index], main = title)
 
     #make legend
     legend("topright", inset = 0.02, legend=c("Raw data", "Guessed line", "Fitted line"),
            col=c("black", "red", "blue"), lty=c(0, 1, 1), pch = c(1, NA, NA), cex=0.8)
 
     #make a guessed line
-    lines(mydata$elapsed[fit_range], (Ci1-Ci2) * exp(-k1*t) + (Ci3-Ci2)/(1+exp(-k2*(t-t0))) + Ci2, col = "red")
+    lines(dataframe$elapsed[fit_range], (Ci1-Ci2) * exp(-k1*t) + (Ci3-Ci2)/(1+exp(-k2*(t-t0))) + Ci2, col = "red")
   }
 
   #try the model
@@ -115,7 +115,7 @@ fit_photosynthetic_induction_Ci_curve <- function(mydata, title = "PI Ci curve",
 
     if (manual_check) {
       #make a fitted line
-      lines(mydata$elapsed[fit_range], (Ci1-Ci2) * exp(-k1*t) + (Ci3-Ci2)/(1+exp(-k2*(t-t0))) + Ci2, col = "blue")
+      lines(dataframe$elapsed[fit_range], (Ci1-Ci2) * exp(-k1*t) + (Ci3-Ci2)/(1+exp(-k2*(t-t0))) + Ci2, col = "blue")
 
       #ask user to check if the model is a good fit
       print("Is is a good fit? (Y/N)")

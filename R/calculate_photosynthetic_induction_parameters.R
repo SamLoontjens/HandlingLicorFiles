@@ -33,15 +33,15 @@ calculate_photosynthetic_induction_parameters <- function(pathname,
   parameters <- c('elapsed','A', 'Ci', 'Qin')
   sheetnumber <- 1
   print(paste("reading:", filename))
-  mydata <- read_licorfile(pathname, sheetnumber, parameters)
+  dataframe <- read_licorfile(pathname, sheetnumber, parameters)
 
   #make titles and fit data
   title_A_curve <- paste("PI A curve:", filename)
   title_Ci_curve <- paste("PI Ci curve:", filename)
-  fit_parameters_A <- fit_photosynthetic_induction_A_curve(mydata = mydata,
+  fit_parameters_A <- fit_photosynthetic_induction_A_curve(dataframe = dataframe,
                                                            title = title_A_curve,
                                                            manual_check = manual_check)
-  fit_parameters_Ci <- fit_photosynthetic_induction_Ci_curve(mydata = mydata,
+  fit_parameters_Ci <- fit_photosynthetic_induction_Ci_curve(dataframe = dataframe,
                                                              title = title_Ci_curve,
                                                              manual_check = manual_check)
 

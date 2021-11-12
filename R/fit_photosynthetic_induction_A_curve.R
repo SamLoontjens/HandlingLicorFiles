@@ -35,7 +35,7 @@ fit_photosynthetic_induction_A_curve <- function(dataframe,
                                                  fit_width = 0,
                                                  manual_check = TRUE) {
   #get light parameters
-  lightinductionparameters <- calculate_lightinductionparameters(dataframe)
+  lightinductionparameters <- calculate_light_induction_parameters(dataframe)
   lightinductionindex = lightinductionparameters[[1]]
   startindex = lightinductionparameters[[2]] #unused
   end_index = length(dataframe$A)

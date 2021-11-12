@@ -25,7 +25,7 @@
 calculate_light_induction_parameters <- function(dataframe, min_stepsize = 1){
 
   #round Qin
-  dataframe <- roundlight(dataframe)
+  dataframe <- round_light(dataframe)
 
   #check where the light changes
   lightchanges <- which(diff(dataframe$Qin) >= min_stepsize) + 1

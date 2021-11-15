@@ -2,20 +2,18 @@
 % Please edit documentation in R/round_parameter.R
 \name{round_parameter}
 \alias{round_parameter}
-\title{A function that rounds one column or vector of a dataframe.}
+\title{A function that rounds one column or vector.}
 \usage{
-round_parameter(dataframe, parameter)
+round_parameter(column)
 }
 \arguments{
-\item{dataframe}{A dataframe}
-
-\item{parameter}{A column name that is the parameter to round}
+\item{column}{A column or vector of a dataframe}
 }
 \value{
 Returns a new column or vector that is rounded.
 }
 \description{
-A function that rounds one column or vector of a dataframe.
+A function that rounds one column or vector.
   It returns a new column or vector that is rounded.
 }
 \examples{

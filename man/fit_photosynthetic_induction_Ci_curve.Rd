@@ -5,7 +5,7 @@
 \title{A function that fits Ci of a photosynthetic induction.}
 \usage{
 fit_photosynthetic_induction_Ci_curve(
-  mydata,
+  dataframe,
   title = "PI Ci curve",
   mean_width = 50,
   fit_width = 0,
@@ -13,6 +13,8 @@ fit_photosynthetic_induction_Ci_curve(
 )
 }
 \arguments{
+\item{dataframe}{A dataframe from which to calculate the fit parameters.}
+
 \item{title}{A string for the title of the plot}
 
 \item{mean_width}{An integer of how many points to use for the means.}
@@ -21,8 +23,6 @@ fit_photosynthetic_induction_Ci_curve(
 If fit_width is smaller than mean_width then it takes all points.}
 
 \item{manual_check}{A boolean to regulate if you want to manual check the data}
-
-\item{dataframe}{A dataframe from which to calculate the fit parameters.}
 }
 \value{
 Returns a list of the check state, Ci1, Ci2, deltaCi, other constands
@@ -42,7 +42,7 @@ A function that fits Ci of a photosynthetic induction curve.
   only two steps. The dataframe has to contain Ci, elapsed and Qin.
 }
 \examples{
-  parameters <- fit_photosynthetic_induction_Ci_curve(mydata,
+  parameters <- fit_photosynthetic_induction_Ci_curve(dataframe,
                                                      "data from today")
 
 }

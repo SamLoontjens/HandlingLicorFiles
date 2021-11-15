@@ -37,6 +37,12 @@ fit_light_response_curve <- function(mydata, title = "LRC",
   curvature = 0.67
   light_compensation_point = 8.8
 
+  LRCformula <- as.formula(Pn ~ -Rd + (alpha * PPF + Pmax - sqrt((alpha * PPF + Pmax)^2 - 4 * curvature * PPF * Pmax * alpha))/(2 * curvature))
+  print(LRCformula)
+
+  Pn_initial <- eval(parse(text = as.character(LRCformula)[3]))
+
+
   if (manual_check) {
     #plot data
     plot(PPF, Pn, main = title)
@@ -46,14 +52,18 @@ fit_light_response_curve <- function(mydata, title = "LRC",
            col=c("black", "red", "blue"), lty=c(0, 1, 1), pch = c(1, NA, NA), cex=0.8)
 
     #make a guessed line
-    lines(mydata$Qin, -Rd + (alpha * PPF + Pmax - sqrt((alpha * PPF + Pmax)^2 - 4 * curvature * PPF * Pmax * alpha))/(2 * curvature), col = "red")
+    #lines(PPF, -Rd + (alpha * PPF + Pmax - sqrt((alpha * PPF + Pmax)^2 - 4 * curvature * PPF * Pmax * alpha))/(2 * curvature), col = "red")
+    #lines(PPF, fitted(myformula), col = "cyan")
+    #curve(expr = myformula, from = 0, to = 2000, n = 10)
+    lines(PPF, Pn_initial, col = "red")
+
   }
 
 
   #try the model
   model <- tryCatch(
     {
-      nls(Pn ~ -Rd + (alpha * PPF + Pmax - sqrt((alpha * PPF + Pmax)^2 - 4 * curvature * PPF * Pmax * alpha))/(2 * curvature),
+      nls(LRCformula,
           start = list(Rd = Rd, alpha = alpha, Pmax = Pmax, curvature = curvature),
           control = nls.control(maxiter  = 1000, warnOnly = TRUE), trace = TRUE)
     },
@@ -86,7 +96,8 @@ fit_light_response_curve <- function(mydata, title = "LRC",
 
     if (manual_check) {
       #if there is no error make fitted line with the fitted parameters
-      lines(PPF, -Rd + (alpha * PPF + Pmax - sqrt((alpha * PPF + Pmax)^2 - 4 * curvature * PPF * Pmax * alpha))/(2 * curvature), col = "blue")
+      #lines(PPF, -Rd + (alpha * PPF + Pmax - sqrt((alpha * PPF + Pmax)^2 - 4 * curvature * PPF * Pmax * alpha))/(2 * curvature), col = "blue")
+      lines(PPF, fitted(model), col = "green")
 
       #ask user to check if the model is a good fit
       print("Is is a good fit? (Y/N)")

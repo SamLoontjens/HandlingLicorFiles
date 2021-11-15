@@ -6,10 +6,19 @@
 \title{A function that calculates all photosynthetic induction parameters
 for all files.}
 \usage{
-calculate_all_photosynthetic_induction_parameters(manual_check = TRUE)
+calculate_all_photosynthetic_induction_parameters(
+  manual_check = TRUE,
+  write_excel = FALSE,
+  write_folder = "output_directory_licorfiles"
+)
 }
 \arguments{
 \item{manual_check}{A boolean that regulates if the fits are checked.}
+
+\item{write_excel}{A boolean that regulates if the dataframe
+is written to an excel file.}
+
+\item{write_folder}{a string of the foldername for writing excel files.}
 }
 \value{
 Returns a dataframe with all the parameters.

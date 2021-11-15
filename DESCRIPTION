@@ -9,7 +9,8 @@ Description:
     Makes it easy to make light response curves and photosynthetic induction curves
 Depends:
 Imports:
-    readxl
+    readxl,
+    writexl
 Suggests:
     devtools,
     roxygen2,

@@ -1,5 +1,5 @@
 #' A function that calculates all photosynthetic induction parameters
-#' for all files.
+#' for multiple files.
 #'
 #' @description
 #'   A function that calculates all photosynthetic induction parameters

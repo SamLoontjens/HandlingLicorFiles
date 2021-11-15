@@ -1,4 +1,5 @@
-#' A function that calculates all light response curve parameters for all files.
+#' A function that calculates all light response curve parameters
+#' for multiple files.
 #'
 #' @description
 #'   A function that calculates all light response curve parameters

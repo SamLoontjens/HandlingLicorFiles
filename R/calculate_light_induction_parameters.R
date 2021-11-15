@@ -1,4 +1,5 @@
-#' A function that calculates the light incuction parameters.
+#' A function that calculates the light incuction parameters
+#' of a single file.
 #'
 #' @description
 #'   A function that calculates the light incuction parameters.

@@ -1,7 +1,7 @@
 ## HandlingLicorFiles
 
 Description;\
-This is a package for handling Li-6400 and Li-6800 output files for data analysis.
+This is a R package for handling Li-6400 and Li-6800 output files for data analysis.
 
 Why the project is useful;\
 This package lets you use a bunch of extra functions. It can make plotting and analysis of Licor output files very fast. Then you have extra time for measurements or learning other stuff! :)

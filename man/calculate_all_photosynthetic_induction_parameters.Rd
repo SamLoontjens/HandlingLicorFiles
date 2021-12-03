@@ -4,12 +4,16 @@
 \name{calculate_all_photosynthetic_induction_parameters}
 \alias{calculate_all_photosynthetic_induction_parameters}
 \title{A function that calculates all photosynthetic induction parameters
-for all files.}
+for multiple files.}
 \usage{
 calculate_all_photosynthetic_induction_parameters(
   manual_check = TRUE,
   write_excel = FALSE,
-  write_folder = "output_directory_licorfiles"
+  write_folder = "output_directory_licorfiles/excel_files/",
+  save_plots = FALSE,
+  decay_tails = FALSE,
+  name_parameters = c("date", "description", "light", "relative humidity", "CO2",
+    "species", "measurement", "plant")
 )
 }
 \arguments{
@@ -19,6 +23,12 @@ calculate_all_photosynthetic_induction_parameters(
 is written to an excel file.}
 
 \item{write_folder}{a string of the foldername for writing excel files.}
+
+\item{save_plots}{A boolean that handles if the plots get saved. FALSE default.}
+
+\item{name_parameters}{A character vector of the parameters in the filename.
+Default is a list of date description, light,
+relative humidity, CO2, species, measurement and plant}
 }
 \value{
 Returns a dataframe with all the parameters.

@@ -2,14 +2,28 @@
 % Please edit documentation in R/calculate_photosynthetic_induction_parameters.R
 \name{calculate_photosynthetic_induction_parameters}
 \alias{calculate_photosynthetic_induction_parameters}
-\title{A function that calculates all photosynthetic induction parameters of a file.}
+\title{A function that calculates all photosynthetic induction parameters
+of a single file.}
 \usage{
-calculate_photosynthetic_induction_parameters(pathname, manual_check = TRUE)
+calculate_photosynthetic_induction_parameters(
+  pathname,
+  manual_check = TRUE,
+  save_plot = FALSE,
+  decay_tail = FALSE,
+  name_parameters = c("date", "description", "light", "relative humidity", "CO2",
+    "species", "measurement", "plant")
+)
 }
 \arguments{
 \item{pathname}{The licor file that will be analysed.}
 
 \item{manual_check}{A boolean that regulates if the fits are checked.}
+
+\item{save_plot}{A boolean that regulates if the plots are saved. Default is FALSE.}
+
+\item{name_parameters}{A character vector of the parameters in the filename.
+Default is a list of date description, light,
+relative humidity, CO2, species, measurement and plant.}
 }
 \value{
 Returns a list with a list of the name parameters and a list of

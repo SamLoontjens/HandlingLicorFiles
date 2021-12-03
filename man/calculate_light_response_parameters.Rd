@@ -4,12 +4,23 @@
 \alias{calculate_light_response_parameters}
 \title{A function that calculates all light response curve parameters of a file.}
 \usage{
-calculate_light_response_parameters(pathname, manual_check = TRUE)
+calculate_light_response_parameters(
+  pathname,
+  manual_check = TRUE,
+  save_plot = FALSE,
+  save_path = "output_directory_licorfiles/light_response_plots/",
+  name_parameters = c("date", "description", "light", "relative humidity", "CO2",
+    "species", "measurement", "plant")
+)
 }
 \arguments{
 \item{pathname}{The licor file that will be analysed.}
 
 \item{manual_check}{A boolean that regulates if the fits are checked.}
+
+\item{name_parameters}{A character vector of the parameters in the filename.
+Default is a list of date description, light,
+relative humidity, CO2, species, measurement and plant.}
 }
 \value{
 Returns a list with a list of the name parameters and a list of

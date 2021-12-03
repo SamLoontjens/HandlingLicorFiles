@@ -6,21 +6,24 @@
 \usage{
 fit_photosynthetic_induction_Ci_curve(
   dataframe,
-  title = "PI Ci curve",
   mean_width = 50,
   fit_width = 0,
-  manual_check = TRUE
+  title = "Photosynthetic induction Ci curve",
+  subtitle = "",
+  manual_check = TRUE,
+  save_plot = FALSE,
+  save_path = "output_directory_licorfiles/photosynthetic_induction_Ci_plots/"
 )
 }
 \arguments{
 \item{dataframe}{A dataframe from which to calculate the fit parameters.}
 
-\item{title}{A string for the title of the plot}
-
 \item{mean_width}{An integer of how many points to use for the means.}
 
 \item{fit_width}{An integer of how many points to use for the fit.
 If fit_width is smaller than mean_width then it takes all points.}
+
+\item{title}{A string for the title of the plot}
 
 \item{manual_check}{A boolean to regulate if you want to manual check the data}
 }

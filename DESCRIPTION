@@ -9,12 +9,15 @@ Description:
     Makes it easy to make light response curves and photosynthetic induction curves
 Depends:
 Imports:
+    ggplot2,
     readxl,
-    writexl
+    writexl,
+    dplyr,
+    rstudioapi,
+    reshape2
 Suggests:
     devtools,
-    roxygen2,
-    ggplot2
+    roxygen2
 License: What license is it under?
 Encoding: UTF-8
 LazyData: true

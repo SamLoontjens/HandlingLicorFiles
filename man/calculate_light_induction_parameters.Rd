@@ -2,9 +2,10 @@
 % Please edit documentation in R/calculate_light_induction_parameters.R
 \name{calculate_light_induction_parameters}
 \alias{calculate_light_induction_parameters}
-\title{A function that calculates the light incuction parameters.}
+\title{A function that calculates the light incuction parameters
+of a single file.}
 \usage{
-calculate_light_induction_parameters(dataframe, min_stepsize = 1)
+calculate_light_induction_parameters(dataframe, min_stepsize = 5)
 }
 \arguments{
 \item{dataframe}{A dataframe from which to calculate the light parameters.}

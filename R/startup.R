@@ -13,16 +13,16 @@
 startup <- function(){
 
   #load all required packages
-  packages = c("ggplot2", "readxl", "rstudioapi")
+  packages = c("ggplot2", "readxl", "writexl", "dplyr", "rstudioapi", "reshape2")
   install_load_packages(packages)
 
   #Set working directory to source directory
-  setwd(dirname(getActiveDocumentContext()$path))
+  setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 
-  #Create directories that are used
+  #Create directories that are frequently used
   create_directories()
 
+  #return TRUE if the startup was completed succesfully
   print("startup complete")
-
   return(TRUE)
 }

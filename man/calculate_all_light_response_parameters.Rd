@@ -2,12 +2,17 @@
 % Please edit documentation in R/calculate_all_light_response_parameters.R
 \name{calculate_all_light_response_parameters}
 \alias{calculate_all_light_response_parameters}
-\title{A function that calculates all light response curve parameters for all files.}
+\title{A function that calculates all light response curve parameters
+for multiple files.}
 \usage{
 calculate_all_light_response_parameters(
   manual_check = TRUE,
   write_excel = FALSE,
-  write_folder = "output_directory_licorfiles"
+  write_folder = "output_directory_licorfiles/excel_files/",
+  save_plots = FALSE,
+  save_path = "output_directory_licorfiles/light_response_plots/",
+  name_parameters = c("date", "description", "light", "relative humidity", "CO2",
+    "species", "measurement", "plant")
 )
 }
 \arguments{
@@ -17,6 +22,14 @@ calculate_all_light_response_parameters(
 is written to an excel file.}
 
 \item{write_folder}{a string of the foldername for writing excel files.}
+
+\item{save_plots}{A boolean that regulates is the plots are saved.}
+
+\item{save_path}{A pathname where to save the plots if save_plots is TRUE.}
+
+\item{name_parameters}{A character vector of the parameters in the filename.
+Default is a list of date description, light,
+relative humidity, CO2, species, measurement and plant.}
 }
 \value{
 Returns a dataframe with all the parameters.

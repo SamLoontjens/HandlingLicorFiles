@@ -15,109 +15,64 @@
 #'   If there is an error or warning it will return a list of NA values.
 #'   If the fit is accepted it will return a list with the fitted parameters.
 #' @author Sam Loontjens
-#' @param mydata The dataframe that will be analysed.
+#' @param dataframe The dataframe that will be analysed.
 #' @param title A string for the title of the plot.
+#' @param subtitle A string of the subtitle to use. Filename recommended.
 #' @param manual_check A boolean that regulates if the fits are checked.
+#' @param save_plot A boolean that regulates if the plots get saved.
+#' @param save_path A string of the pathname where the plots get saved.
 #' @export
 #' @return Returns a list of the fitted light response parameters
 #' @examples
 #' fitted_parameters <- fit_light_response_curve(mydata)
 #'
-fit_light_response_curve <- function(mydata, title = "LRC",
-                                     manual_check = TRUE) {
+fit_light_response_curve <- function(dataframe,
+                                     title = "Light response curve",
+                                     subtitle = "",
+                                     manual_check = TRUE,
+                                     save_plot = FALSE,
+                                     save_path = "output_directory_licorfiles/light_response_plots/") {
 
   #get data
-  PPF <- mydata$Qin
-  Pn <- mydata$A
+  PPF <- dataframe$Qin
+  Pn <- dataframe$A
 
   #select start parameters
   Rd = 0.66
   alpha = 0.076
-  Pmax = 15.2
+  Pmax = max(Pn)
   curvature = 0.67
-  light_compensation_point = 8.8
+  start_parameter_list <- list(Rd = Rd, alpha = alpha, Pmax = Pmax, curvature = curvature)
 
+  #make formula for fitting
   LRCformula <- as.formula(Pn ~ -Rd + (alpha * PPF + Pmax - sqrt((alpha * PPF + Pmax)^2 - 4 * curvature * PPF * Pmax * alpha))/(2 * curvature))
-  print(LRCformula)
 
-  Pn_initial <- eval(parse(text = as.character(LRCformula)[3]))
+  #fit the parameters
+  fit_parameters <- fit_any_curve(x = PPF,
+                                  y = Pn,
+                                  formula = LRCformula,
+                                  variable_name = "PPF",
+                                  list_of_start_parameters = start_parameter_list,
+                                  title = title,
+                                  subtitle = subtitle,
+                                  manual_check = manual_check,
+                                  save_plot = save_plot,
+                                  save_path = save_path)
 
-
-  if (manual_check) {
-    #plot data
-    plot(PPF, Pn, main = title)
-
-    #make legend
-    legend("bottomright", inset = 0.02, legend=c("Raw data", "Guessed line", "Fitted line"),
-           col=c("black", "red", "blue"), lty=c(0, 1, 1), pch = c(1, NA, NA), cex=0.8)
-
-    #make a guessed line
-    #lines(PPF, -Rd + (alpha * PPF + Pmax - sqrt((alpha * PPF + Pmax)^2 - 4 * curvature * PPF * Pmax * alpha))/(2 * curvature), col = "red")
-    #lines(PPF, fitted(myformula), col = "cyan")
-    #curve(expr = myformula, from = 0, to = 2000, n = 10)
-    lines(PPF, Pn_initial, col = "red")
-
-  }
-
-
-  #try the model
-  model <- tryCatch(
-    {
-      nls(LRCformula,
-          start = list(Rd = Rd, alpha = alpha, Pmax = Pmax, curvature = curvature),
-          control = nls.control(maxiter  = 1000, warnOnly = TRUE), trace = TRUE)
-    },
-    error = function(e) {
-      return("error")
-    },
-    warning = function(w){
-      return("warning")
-    }
-  )
-
-  #if there is an error return a list with no values
-  if (is_single_string(model)) {
-
-    if (manual_check) {
-      print(paste("Fit gave an", model, "(press ENTER to continue)"))
-      user_input <- readline()
-    }
-
-    fit_parameters <- list(stateLRC = "error", Rd = NA, alpha = NA, Pmax = NA, curvature = NA,
-                           light_compensation_point = NA)
+  #get  the parameters from the fit to calculate the light_compensation point
+  fit_state = fit_parameters[[1]]
+  Rd = fit_parameters[[5]]
+  alpha = fit_parameters[[6]]
+  Pmax = fit_parameters[[7]]
+  curvature = fit_parameters[[8]]
+  if (fit_state == "accepted" | fit_state == "not checked") {
+    light_compensation_point <- (curvature * Rd^2 - Rd * Pmax) / (Rd * alpha - alpha * Pmax)
   } else {
-
-    #if there is no error extract the fitted parameters
-    Rd = coef(model)[[1]]
-    alpha = coef(model)[[2]]
-    Pmax = coef(model)[[3]]
-    curvature = coef(model)[[4]]
-    light_compensation_point = (curvature * Rd^2 - Rd * Pmax) / (Rd * alpha - alpha * Pmax)
-
-    if (manual_check) {
-      #if there is no error make fitted line with the fitted parameters
-      #lines(PPF, -Rd + (alpha * PPF + Pmax - sqrt((alpha * PPF + Pmax)^2 - 4 * curvature * PPF * Pmax * alpha))/(2 * curvature), col = "blue")
-      lines(PPF, fitted(model), col = "green")
-
-      #ask user to check if the model is a good fit
-      print("Is is a good fit? (Y/N)")
-      user_input <- readline()
-
-      if (user_input == "Y") {
-        print("Fit accepted")
-        fit_parameters <- list(stateLRC = "accepted", Rd = Rd, alpha = alpha, Pmax = Pmax, curvature = curvature,
-                               light_compensation_point = light_compensation_point)
-      } else {
-        print("Fit rejected")
-        fit_parameters <- list(stateLRC = "rejected", Rd = NA, alpha = NA, Pmax = NA, curvature = NA,
-                               light_compensation_point = NA)
-      }
-    } else {
-      fit_parameters <- list(stateLRC = "not checked", Rd = Rd, alpha = alpha, Pmax = Pmax, curvature = curvature,
-                             light_compensation_point = light_compensation_point)
-    }
+    light_compensation_point <- NA
   }
 
-  #return a list of fitted parametes
+  #add the parameters to a list
+  fit_parameters <- c(fit_parameters, list(lcp = light_compensation_point))
+
   return(fit_parameters)
 }

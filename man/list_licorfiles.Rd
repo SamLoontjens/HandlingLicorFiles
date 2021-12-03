@@ -4,7 +4,7 @@
 \alias{list_licorfiles}
 \title{A function that lists the licorfiles in the input directory}
 \usage{
-list_licorfiles(directory = "")
+list_licorfiles(pathname = "input_directory_licorfiles/")
 }
 \arguments{
 \item{directory}{A directory name in the input directory

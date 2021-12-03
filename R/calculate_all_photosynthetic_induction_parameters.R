@@ -1,5 +1,5 @@
 #' A function that calculates all photosynthetic induction parameters
-#' for all files.
+#' for multiple files.
 #'
 #' @description
 #'   A function that calculates all photosynthetic induction parameters
@@ -16,6 +16,11 @@
 #' @param write_excel A boolean that regulates if the dataframe
 #'                    is written to an excel file.
 #' @param write_folder a string of the foldername for writing excel files.
+#' @param save_plots A boolean that handles if the plots get saved. FALSE default.
+#' @param name_parameters
+#' A character vector of the parameters in the filename.
+#' Default is a list of date description, light,
+#' relative humidity, CO2, species, measurement and plant
 #' @export
 #' @return
 #' Returns a dataframe with all the parameters.
@@ -24,13 +29,32 @@
 #'
 calculate_all_photosynthetic_induction_parameters <- function(manual_check = TRUE,
                                                               write_excel = FALSE,
-                                                              write_folder = "output_directory_licorfiles") {
+                                                              write_folder = "output_directory_licorfiles/excel_files/",
+                                                              save_plots = FALSE,
+                                                              decay_tails = FALSE,
+                                                              name_parameters = c("date",
+                                                                                  "description",
+                                                                                  "light",
+                                                                                  "relative humidity",
+                                                                                  "CO2",
+                                                                                  "species",
+                                                                                  "measurement",
+                                                                                  "plant")) {
 
   #list the files that will be used
-  photosynthetic_induction_file_list <- list_licorfiles("photosynthetic_induction_data")
+  photosynthetic_induction_file_list <- list_licorfiles("input_directory_licorfiles/photosynthetic_induction_data")
 
-  #make an empty data frame
+  #make an empty data frames
+  name_dataframe <- data.frame()
+  base_dataframe <- data.frame()
+  A_dataframe <- data.frame()
+  Ci_dataframe <- data.frame()
   photosynthetic_induction_dataframe <- data.frame()
+
+  if (decay_tails) {
+    A_decay_dataframe <- data.frame()
+    Ci_decay_dataframe <- data.frame()
+  }
 
   #calculate the photosynthetic induction parameters for all files
   for (filename in photosynthetic_induction_file_list) {
@@ -42,13 +66,47 @@ calculate_all_photosynthetic_induction_parameters <- function(manual_check = TRU
 
     #call the function to calculate the parameters
     parameterlist <- calculate_photosynthetic_induction_parameters(pathname = input_pathname,
-                                                                   manual_check = manual_check)
+                                                                   manual_check = manual_check,
+                                                                   save_plot = save_plots,
+                                                                   decay_tail = decay_tails,
+                                                                   name_parameters = name_parameters)
 
-    #change the list to a dataframe row
-    datarow <- data.frame(parameterlist)
+    #merge the rows before the columns, fill with NA
+    name_dataframe <- dplyr::bind_rows(name_dataframe,
+                                       data.frame(parameterlist[[1]]))
+    base_dataframe <- dplyr::bind_rows(base_dataframe,
+                                       data.frame(parameterlist[[2]]))
+    A_dataframe <- dplyr::bind_rows(A_dataframe,
+                                    data.frame(parameterlist[[3]]))
+    Ci_dataframe <- dplyr::bind_rows(Ci_dataframe,
+                                     data.frame(parameterlist[[4]]))
 
-    #add them to the list
-    photosynthetic_induction_dataframe <- rbind(photosynthetic_induction_dataframe, datarow)
+    if (("fit_parameters_A_decay" %in% names(parameterlist)) && decay_tails) {
+
+      #merge the rows before the colums, fill with NA for the decays
+      A_decay_dataframe <- dplyr::bind_rows(A_decay_dataframe,
+                                            data.frame(parameterlist[[5]]))
+      Ci_decay_dataframe <- dplyr::bind_rows(Ci_decay_dataframe,
+                                             data.frame(parameterlist[[6]]))
+
+    } else if (decay_tails) {
+
+      A_decay_dataframe <- dplyr::bind_rows(A_decay_dataframe,
+                                            data.frame(list(A_fit = "none")))
+      Ci_decay_dataframe <- dplyr::bind_rows(Ci_decay_dataframe,
+                                             data.frame(list(Ci_fit = "none")))
+    }
+  }
+
+  #add all dataframes together
+  photosynthetic_induction_dataframe <- cbind(name_dataframe,
+                                                         base_dataframe,
+                                                         A_dataframe,
+                                                         Ci_dataframe)
+  if (decay_tails) {
+    photosynthetic_induction_dataframe <- cbind(photosynthetic_induction_dataframe,
+                                                           A_decay_dataframe,
+                                                           Ci_decay_dataframe)
   }
 
   #write the dataframe to excel for further analysis
@@ -64,10 +122,11 @@ calculate_all_photosynthetic_induction_parameters <- function(manual_check = TRU
     #writing the xlsx
     writexl::write_xlsx(x = photosynthetic_induction_dataframe,
                         path = output_pathname,
-                        col_names = TRUE)
+                        col_names = TRUE,
+                        format_headers = FALSE)
 
     #confirmation
-    print(paste("Write", output_pathname))
+    print(paste("Writing", output_pathname))
   }
 
   #return a dataframe with all the parameters

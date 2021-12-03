@@ -4,10 +4,16 @@
 \alias{split_licor_filename}
 \title{A function that splits a filename of a licorfile.}
 \usage{
-split_licor_filename(filename)
+split_licor_filename(
+  filename,
+  name_parameters = c("date", "description", "light", "relative humidity", "CO2",
+    "species", "measurement", "plant")
+)
 }
 \arguments{
 \item{filename}{A filename to split}
+
+\item{name_parameters}{A character vector of the names in the filename.}
 }
 \value{
 A list of the parameters included in the filename.

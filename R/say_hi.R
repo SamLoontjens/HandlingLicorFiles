@@ -12,7 +12,4 @@ say_hi <- function(snack = "cookie") {
   #print a nice string for Sam
   printline <- paste("Say hi to Sam Loontjens and give him a", snack, "!")
   print(printline)
-
-  #check if this function can find another function within the same package
-  testfunction()
 }

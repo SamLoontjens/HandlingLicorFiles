@@ -4,10 +4,12 @@
 \alias{normalize_column}
 \title{A function that normalizes one column.}
 \usage{
-normalize_column(column)
+normalize_column(column, na.rm = FALSE)
 }
 \arguments{
 \item{column}{A vector (or column) to be normalized}
+
+\item{na.rm}{A boolean that regulates if the NA values are excluded. Default is FALSE.}
 }
 \value{
 Returns a normilized new column

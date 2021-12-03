@@ -4,14 +4,27 @@
 \alias{fit_light_response_curve}
 \title{A function that fits a light response curve.}
 \usage{
-fit_light_response_curve(mydata, title = "LRC", manual_check = TRUE)
+fit_light_response_curve(
+  dataframe,
+  title = "Light response curve",
+  subtitle = "",
+  manual_check = TRUE,
+  save_plot = FALSE,
+  save_path = "output_directory_licorfiles/light_response_plots/"
+)
 }
 \arguments{
-\item{mydata}{The dataframe that will be analysed.}
+\item{dataframe}{The dataframe that will be analysed.}
 
 \item{title}{A string for the title of the plot.}
 
+\item{subtitle}{A string of the subtitle to use. Filename recommended.}
+
 \item{manual_check}{A boolean that regulates if the fits are checked.}
+
+\item{save_plot}{A boolean that regulates if the plots get saved.}
+
+\item{save_path}{A string of the pathname where the plots get saved.}
 }
 \value{
 Returns a list of the fitted light response parameters

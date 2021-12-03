@@ -16,8 +16,11 @@
 #'
 read_licorfile <- function(filename, sheetnumber = 1, parameters = TRUE){
 
+  #print which file to read
+  print(paste("Reading:", filename))
+
   #read licor file
-  mydata = data.frame(read_excel(filename, sheet = sheetnumber, col_names = FALSE))
+  mydata = data.frame(readxl::read_excel(filename, sheet = sheetnumber, col_names = FALSE))
 
   #find header
   headerrow = which(mydata[1] == 'obs' | mydata[1] == 'Obs')

@@ -4,12 +4,14 @@
 \alias{moving_average}
 \title{A function that calculates a moving average of a column or vector.}
 \usage{
-moving_average(column, averaging_width)
+moving_average(column, averaging_width = 5, sides = 2)
 }
 \arguments{
 \item{column}{A column or vector to be averaged.}
 
 \item{averaging_width}{the amount of neighbouring values to average.}
+
+\item{sides}{One or two sided rolling average, default is two.}
 }
 \value{
 Returns the new column or vector that is moving averaged
@@ -21,9 +23,9 @@ A function that calculates a moving or rolling average of a
   It returns the new column or vector that is averaged.
 }
 \examples{
-mydata$A <- moving_average(mydata$A, 5)
+mydata$A <- moving_average(mydata$A, 5, 2)
 
 or
-mydata$avrA <- moving_average(mydata$A, 5)
+mydata$avrA <- moving_average(mydata$A, 5, 2)
 
 }

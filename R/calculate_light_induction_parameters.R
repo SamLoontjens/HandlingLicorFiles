@@ -23,13 +23,13 @@
 #' @examples
 #' list_of_light_parameters <- calculate_light_induction_parameters(mydata, 5)
 #'
-calculate_light_induction_parameters <- function(dataframe, min_stepsize = 5){
+calculate_light_induction_parameters <- function(dataframe, min_stepsize = 10){
 
   #round Qin
   dataframe <- round_light(dataframe)
 
   #check where the light increases
-  light_changes <- which(diff(dataframe$Qin) >= min_stepsize) + 1
+  light_changes <- which(diff(dataframe$Qin) > min_stepsize) + 1
   light_induction_index <- light_changes[1]
   start_index <- tail(light_changes, n=1)
   time_zero <- dataframe$elapsed[start_index]
@@ -45,7 +45,7 @@ calculate_light_induction_parameters <- function(dataframe, min_stepsize = 5){
 
 
   #check where the light decreases (after the light induction + 10 points)
-  negative_light_changes <- which(diff(dataframe$Qin[light_induction_index+10:length(dataframe$Qin)]) <= -min_stepsize) + 1 + light_induction_index+10
+  negative_light_changes <- which(diff(dataframe$Qin[light_induction_index+10:length(dataframe$Qin)]) < -min_stepsize) + 1 + light_induction_index+10
 
   #if there is any decrease in light
   if (length(negative_light_changes) >= 1) {

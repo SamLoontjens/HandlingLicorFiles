@@ -49,7 +49,9 @@ calculate_light_response_parameters <- function(pathname,
   parameters <- c('elapsed','A', 'Ci', 'Qin')
   sheetnumber <- 1
   print(paste("reading:", filename))
-  dataframe <- read_licorfile(pathname, sheetnumber, parameters)
+  dataframe <- read_licorfile(filepath = pathname,
+                              sheetnumber = sheetnumber,
+                              parameters = parameters)
 
   #fit data
   fit_parameters_LRC <- fit_light_response_curve(dataframe = dataframe,

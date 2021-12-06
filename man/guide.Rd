@@ -6,11 +6,8 @@
 \usage{
 guide()
 }
-\value{
-Nothing
-}
 \description{
-A function that prints a guide for the user.
+A function that prints a guide of this package for the user.
 }
 \examples{
 guide()

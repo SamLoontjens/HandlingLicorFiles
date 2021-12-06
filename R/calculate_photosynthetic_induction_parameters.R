@@ -49,10 +49,12 @@ calculate_photosynthetic_induction_parameters <- function(pathname,
   subtitle <- strsplit(x = filename, split = "\\.")[[1]][1]
 
   #read the licorfile with required parameters
-  parameters <- c('elapsed','A', 'Ci', 'Qin', 'Tleaf', "RHcham", "CO2_r")
+  parameters <- c('elapsed','A', 'Ci', 'Qin', 'TleafCnd', "RHcham", "CO2_r")
   sheetnumber <- 1
   print(paste("reading:", filename))
-  dataframe <- read_licorfile(pathname, sheetnumber, parameters)
+  dataframe <- read_licorfile(filepath = pathname,
+                              sheetnumber = sheetnumber,
+                              parameters = parameters)
 
   #check if there is a decay at the end
   lightinductionparameters <- calculate_light_induction_parameters(dataframe)

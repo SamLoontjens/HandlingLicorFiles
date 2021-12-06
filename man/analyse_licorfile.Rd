@@ -2,11 +2,12 @@
 % Please edit documentation in R/analyse_licorfile.R
 \name{analyse_licorfile}
 \alias{analyse_licorfile}
-\title{A function that analyses a licorfile for errors}
+\title{A function that analyses a licorfile for visual examination}
 \usage{
 analyse_licorfile(
   pathname,
-  parameters = c("elapsed", "A", "Ci", "Qin", "TleafCnd", "VPDleaf", "RHcham", "CO2_r"),
+  parameters = c("elapsed", "A", "Ci", "Qin", "TleafCnd", "VPDleaf", "RHcham", "CO2_r",
+    "gsw"),
   x_axis = c("elapsed"),
   exclude = c("CO2_r"),
   calculate_means = FALSE,
@@ -30,7 +31,8 @@ analyse_licorfile(
 Returns a list of means if calculate means is true
 }
 \description{
-A function for a quick overview of the data
+A function that analyses a licorfile for visual examination.
+  Gives a quick overview of the data.
 }
 \examples{
 

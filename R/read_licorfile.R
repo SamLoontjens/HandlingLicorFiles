@@ -34,12 +34,12 @@ read_licorfile <- function(filepath,
 
   #split the file path
   split_path <- split_filepath(filepath)
-  split_name <<- split_licor_filename(split_path[["filename"]])
+  split_name <- split_licor_filename(split_path[["filename"]])
 
   #read the licor file
   if (is.na(split_name[["filetype"]])) {
     print("filetype: NA (.txt)")
-    dataframe <<- data.frame(read.delim(file = filepath,
+    dataframe <- data.frame(read.delim(file = filepath,
                                    sep = "\t",
                                    header = FALSE,
                                    stringsAsFactors = FALSE,
@@ -71,13 +71,13 @@ read_licorfile <- function(filepath,
 
 
   #find header
-  headerrow <<- which(dataframe[1] == 'obs' | dataframe[1] == 'Obs')
-  header <<- dataframe[c(headerrow), ]
+  headerrow <- which(dataframe[1] == 'obs' | dataframe[1] == 'Obs')
+  header <- dataframe[c(headerrow), ]
 
   #skip head
-  skiplines <<- which(dataframe[1] == '1') - 1
+  skiplines <- which(dataframe[1] == '1') - 1
   #old# skiplines <- headerrow + 1
-  dataframe <- dataframe[-c(1:skiplines), ]
+  dataframe <<- dataframe[-c(1:skiplines), ]
 
   #set header
   colnames(dataframe) <- header
@@ -102,8 +102,11 @@ read_licorfile <- function(filepath,
       #OLD# if (length(remarklist) >= 1) {
       #OLD#   dataframe <- dataframe[-remarklist, ]
       #OLD# }
-    remarklist <- which(is.na(suppressWarnings(apply(dataframe[1], 2, as.numeric))))
-    dataframe <- dataframe[-remarklist, ]
+    remarklist <- suppressWarnings(which(is.na(as.numeric(dataframe[[1]])) == TRUE))
+    print(length(remarklist))
+    if (length(remarklist) > 0) {
+      dataframe <- dataframe[-remarklist, ]
+    }
 
     #change names to new 6800 format
     if (change_names) {

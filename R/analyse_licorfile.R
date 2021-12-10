@@ -62,7 +62,7 @@ analyse_licorfile <- function(pathname,
   #add all the normalized data
   for (i in names(dataframe[!names(dataframe) %in% x_axis])) {
     column <- dataframe[[i]]
-    normalized_dataframe[i] <- normalize_column(column)
+    normalized_dataframe[i] <- normalize_column(column, na.rm = TRUE)
   }
 
   #remove the excluded

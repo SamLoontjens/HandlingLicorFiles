@@ -51,14 +51,13 @@ calculate_photosynthetic_induction_parameters <- function(pathname,
   #read the licorfile with required parameters
   parameters <- c('elapsed','A', 'Ci', 'Qin', 'TleafCnd', "RHcham", "CO2_r")
   sheetnumber <- 1
-  print(paste("reading:", filename))
   dataframe <- read_licorfile(filepath = pathname,
                               sheetnumber = sheetnumber,
                               parameters = parameters)
 
   #check if there is a decay at the end
   lightinductionparameters <- calculate_light_induction_parameters(dataframe)
-  lightinductionindex = lightinductionparameters[[1]]
+  lightinductionindex <- lightinductionparameters[[1]]
 
   if (("light_decay_index" %in% names(lightinductionparameters)) && decay_tail) {
     decay_tail <- TRUE
@@ -90,9 +89,9 @@ calculate_photosynthetic_induction_parameters <- function(pathname,
   } else {
     PAR3 = NA
   }
-  avg_leaf_temp <- mean(dataframe$Tleaf)
-  temp1 <- mean(dataframe$Tleaf[1:50])
-  temp2 <- mean(dataframe$Tleaf[lightinductionindex+10:(lightinductionindex+60)])
+  avg_leaf_temp <- mean(dataframe$TleafCnd)
+  temp1 <- mean(dataframe$TleafCnd[1:50])
+  temp2 <- mean(dataframe$TleafCnd[(lightinductionindex+10):(lightinductionindex+60)])
   delta_temp = temp2 - temp1
   avg_RH <- mean(dataframe$RHcham)
   avg_CO2 <- mean(dataframe$CO2_r)

@@ -74,13 +74,15 @@ read_licorfile <- function(filepath,
   headerrow <- which(dataframe[1] == 'obs' | dataframe[1] == 'Obs')
   header <- dataframe[c(headerrow), ]
 
-  #skip head
-  skiplines <- which(dataframe[1] == '1') - 1
-  #old# skiplines <- headerrow + 1
-  dataframe <<- dataframe[-c(1:skiplines), ]
-
   #set header
   colnames(dataframe) <- header
+
+  #remove all remarks/non data rows
+  remarklist <- suppressWarnings(which(is.na(as.numeric(dataframe[[1]])) == TRUE))
+  print(length(remarklist))
+  if (length(remarklist) > 0) {
+    dataframe <- dataframe[-remarklist, ]
+  }
 
   #check if it is a Li6400 or Li6800
   if (header[1] == 'obs') {
@@ -96,17 +98,6 @@ read_licorfile <- function(filepath,
 
   #for a Li6400 files
   if (licormachine == "LI-6400") {
-
-    #remove remarks, namely all rows that are not an integer
-      #OLD# remarklist <- which(dataframe[1] == 'Remark=')
-      #OLD# if (length(remarklist) >= 1) {
-      #OLD#   dataframe <- dataframe[-remarklist, ]
-      #OLD# }
-    remarklist <- suppressWarnings(which(is.na(as.numeric(dataframe[[1]])) == TRUE))
-    print(length(remarklist))
-    if (length(remarklist) > 0) {
-      dataframe <- dataframe[-remarklist, ]
-    }
 
     #change names to new 6800 format
     if (change_names) {

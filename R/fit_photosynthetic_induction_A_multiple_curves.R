@@ -29,7 +29,7 @@
 #'   parameters <- fit_photosynthetic_induction_A_curve(mydata,
 #'                                                      "data from today")
 #'
-fit_photosynthetic_induction_A__multiple_curves <- function(dataframe,
+fit_photosynthetic_induction_A_multiple_curves <- function(dataframe,
                                                             mean_width = 50,
                                                             fit_width = 0,
                                                             title = "Photosynthetic induction A curve",

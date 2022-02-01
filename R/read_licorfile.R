@@ -10,11 +10,14 @@
 #'   Li-6800 manual page 226
 #'   Li-6400 manual page 21 (81 of 1324)
 #' @author Sam Loontjens
-#' @param filepath A string with the filepath to read.
+#' @param filepath A string with the filepath to read (if reading from excel).
 #' @param sheetnumber An integer which sheet to read from the file.
 #' @param parameters
 #'   A list of desired parameters to extract. Default is everything.
-#' @param change_names
+#' @param numeric
+#'   A boolean that regulates if the dataframe is changed to numeric.
+#'   Default is TRUE (reccomended).
+#' @param convert
 #'   A boolean that regulates if the names from the Li-6400 files are changed
 #'   to the Li-6800 format. Default is TRUE.
 #' @export
@@ -26,120 +29,115 @@
 #'
 read_licorfile <- function(filepath,
                            sheetnumber = 1,
-                           parameters = TRUE,
-                           change_names = TRUE) {
+                           parameters = c(),
+                           numeric = TRUE,
+                           convert = TRUE) {
 
-  #print which file to read
-  print(paste("Reading:", filepath))
+  #get the file type
+  filetype <- readxl::format_from_ext(path = filepath)
 
-  #split the file path
-  split_path <- split_filepath(filepath)
-  split_name <- split_licor_filename(split_path[["filename"]])
+  #set the licor name
+  licor <- ""
 
-  #read the licor file
-  if (is.na(split_name[["filetype"]])) {
-    print("filetype: NA (.txt)")
-    dataframe <- data.frame(read.delim(file = filepath,
-                                   sep = "\t",
-                                   header = FALSE,
-                                   stringsAsFactors = FALSE,
-                                   dec = ".",
-                                   skip = 15))
+  #read the first line dendend on the type
+  if (is.na(filetype) | filetype == "txt") {
 
-  } else if (split_name[["filetype"]] == "xlsx") {
-    print("filetype: .xlsx")
-    dataframe <- data.frame(readxl::read_xlsx(filepath,
-                                           sheet = sheetnumber,
-                                           col_names = FALSE))
+    #read the first line
+    con <- file(filepath, "r")
+    first_line <- readLines(con, n=1)
+    close(con)
 
-  } else if (split_name[["filetype"]] == "xls") {
-    print("filetype: .xls")
-    try
-    dataframe <- data.frame(readxl::read_xls(path.expand(filepath),
-                                           sheet = sheetnumber,
-                                           col_names = FALSE))
+    #set the licor number
+    licor = get_licor_number(first_line)
 
-  } else if (split_name[["filetype"]] == "csv") {
-    print("filetype: .csv")
-    dataframe <- data.frame(readr::read_csv(file = filepath, col_names = FALSE))
+  } else if (filetype == "xlsx") {
+
+    #read the first line
+    first_line <- readxl::read_xlsx(path = filepath,
+                                    sheet = sheetnumber,
+                                    col_names = FALSE,
+                                    n_max = 1)
+
+    #set the licor number
+    licor = get_licor_number(first_line)
+
+  } else if (filetype == "xls") {
+
+    #ofthen results in errors, so it is in a try catch
+    tryCatch(
+      {
+        #read the first line
+        first_line <- readxl::read_xls(path = filepath,
+                                       sheet = sheetnumber,
+                                       col_names = FALSE,
+                                       n_max = 1)
+
+        #set the licor number
+        licor = get_licor_number(first_line)
+
+
+      },
+      error = function(e) {
+        stop(paste("read xls gave the following error:", e,
+                   " Known issue,
+                   look at https://github.com/tidyverse/readxl/issues/598 \n
+                   try opening in excel and saving to new format xlsx"))
+        return("error")
+      }
+    )
+
+  } else if (filetype == "csv") {
+
+    #read the first line
+    first_line <- read.csv(file = filepath,
+                           col_names = FALSE,
+                           nrows = 1)
+
+    #set the licor number
+    licor = get_licor_number(first_line)
 
   } else {
     #if it is none of the above file types give an error
-    stop("Wrong file type: File is not a licorfile")
-
+    stop("Wrong file type: File is not a 6800 licorfile,
+         try to save it as an .xlsx file")
   }
 
-
-  #find header
-  headerrow <- which(dataframe[1] == 'obs' | dataframe[1] == 'Obs')
-  header <- dataframe[c(headerrow), ]
-
-  #set header
-  colnames(dataframe) <- header
-
-  #remove all remarks/non data rows
-  remarklist <- suppressWarnings(which(is.na(as.numeric(dataframe[[1]])) == TRUE))
-  print(length(remarklist))
-  if (length(remarklist) > 0) {
-    dataframe <- dataframe[-remarklist, ]
-  }
-
-  #check if it is a Li6400 or Li6800
-  if (header[1] == 'obs') {
-    licormachine <- "LI-6800"
-  } else if (header[1] == 'Obs') {
-    licormachine <- "LI-6400"
+  #call the right reading function dependent on the licor number
+  if (licor == "6800") {
+    #read the licor 6800 file
+    dataframe <- read_licorfile_6800(filepath = filepath,
+                                     parameters = parameters,
+                                     numeric = numeric)
+  } else if (licor == "6400") {
+    #read the licor 6400 file
+    dataframe <- read_licorfile_6400(filepath = filepath,
+                                     parameters = parameters,
+                                     convert = convert,
+                                     numeric = numeric)
   } else {
-    licormachine <- "unkown"
+    #give an error if the licorfile is not correct
+    stop("No licor type found in the first line")
   }
 
-  #print if it is a 6400 or a 6800 file
-  print(licormachine)
-
-  #for a Li6400 files
-  if (licormachine == "LI-6400") {
-
-    #change names to new 6800 format
-    if (change_names) {
-      #change Photo to A
-      names(dataframe)[names(dataframe) == 'Photo'] <- 'A'
-      #change Trmmol to E
-      names(dataframe)[names(dataframe) == 'Trmmol'] <- 'E'
-      #change Cond to gsw
-      names(dataframe)[names(dataframe) == 'Cond'] <- 'gsw'
-      #change Tleaf to TleafCnd
-      names(dataframe)[names(dataframe) == 'Tleaf'] <- 'TleafCnd'
-      #change CO2S to CO2_s
-      names(dataframe)[names(dataframe) == 'CO2S'] <- 'CO2_s'
-      #change CO2R to CO2_r
-      names(dataframe)[names(dataframe) == 'CO2R'] <- 'CO2_r'
-      #change H2OS to H2O_s
-      names(dataframe)[names(dataframe) == 'H2OS'] <- 'H2O_s'
-      #change H2OR to H2O_r
-      names(dataframe)[names(dataframe) == 'H2OR'] <- 'H2O_r'
-      #change PARi to Qin
-      names(dataframe)[names(dataframe) == 'PARi'] <- 'Qin'
-      #change Vpdl to VPDleaf
-      names(dataframe)[names(dataframe) == 'VpdL'] <- 'VPDleaf'
-      #change Press to Pa
-      names(dataframe)[names(dataframe) == 'Press'] <- 'Pa'
-
-      #calculate RHcham
-      delta_Pa <- 0
-      dataframe$VPcham <- as.numeric(dataframe$H2O_s) * (as.numeric(dataframe$Pa) + delta_Pa) / 1000
-      dataframe$SVPcham <- 0.61365 * exp((17.502 * as.numeric(dataframe$Tair)) / (240.97 + as.numeric(dataframe$Tair)))
-      dataframe$RHcham <- dataframe$VPcham / dataframe$SVPcham * 100
-
-      #calculate elapsed
-      dataframe$elapsed <- (as.numeric(dataframe$FTime) - as.numeric(dataframe$FTime[1]))
-    }
-  }
-
-  #Select parameters if they are included
-  dataframe <- extract_parameters(dataframe, parameters)
-
-  #change all columns to numeric
-  dataframe <- numeric_dataframe(dataframe)
-
+  #return the right dataframe
   return(dataframe)
+}
+
+get_licor_number <- function(first_line) {
+
+  #check if it is an Licor 6400 or 6800
+  if (grepl("OPEN", first_line)) {
+    print("Licor 6400 file")
+    licor = "6400"
+
+  } else if (grepl("Header", first_line) | grepl("SysConst", first_line[[1]])) {
+    print("Licor 6800 file")
+    licor = "6800"
+
+  } else {
+    stop("No licor type found in the first line")
+  }
+
+  #return the licor number
+  return(licor)
 }

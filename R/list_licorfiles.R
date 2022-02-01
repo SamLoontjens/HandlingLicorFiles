@@ -16,6 +16,9 @@ list_licorfiles <- function(pathname = "input_directory_licorfiles/"){
   #idea: do something to only list licorfiles and not the rest of the files?
   list_of_licorfiles <- list.files(path = pathname)
 
+  #print how many licorfiles are read
+  print(paste("Number of licor files: ", length(list_of_licorfiles)))
+
   #Returns a list of licorfiles in the given directory
   return(list_of_licorfiles)
 }

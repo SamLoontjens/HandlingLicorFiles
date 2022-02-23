@@ -114,7 +114,7 @@ fit_photosynthetic_induction_A_multiple_curves <- function(dataframe,
   #make formula for fitting
   Michaelis_Menten <- as.formula(A ~ ((A2-A1)*t)/(k+t) + A1)
   exponential <- as.formula(A ~ (A2-A1)-(A2-A1)*exp(-k*t) + A1)
-  qubic <- as.formula(A ~ ((a*t+(A2-A1))-((a*x+(A2-A1))^2-4*a*b*t*(A2-A1))^0.5)/(2*b) + A1)
+  qubic <- as.formula(A ~ ((a*t+(A2-A1))-((a*t+(A2-A1))^2-4*a*b*t*(A2-A1))^0.5)/(2*b) + A1)
   formula_list <- list(Michaelis_Menten,
                        exponential,
                        qubic)

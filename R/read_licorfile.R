@@ -3,66 +3,141 @@
 #' @description
 #'   A function that reads a licorfile.
 #'   It returns a clean dataframe with only the desired parametes.
+#'
+#'   No dots in the file path accepted, except one for the file type.
+#'   The functions of this package expect the parameter names of a Li-6800, so
+#'   change_names = TRUE is recommended.
+#'   Li-6800 manual page 226
+#'   Li-6400 manual page 21 (81 of 1324)
 #' @author Sam Loontjens
-#' @param filename A string with the filename to read.
+#' @param filepath A string with the filepath to read (if reading from excel).
 #' @param sheetnumber An integer which sheet to read from the file.
-#' @param parameters A list of desired parameters to extract.
+#' @param parameters
+#'   A list of desired parameters to extract. Default is everything.
+#' @param numeric
+#'   A boolean that regulates if the dataframe is changed to numeric.
+#'   Default is TRUE (reccomended).
+#' @param convert
+#'   A boolean that regulates if the names from the Li-6400 files are changed
+#'   to the Li-6800 format. Default is TRUE.
 #' @export
 #' @return Returns a dataframe with only the desired parameters.
 #' @examples
 #' parameters_to_extract <- c("A, Ci, elapsed, Qin")
-#' mydata <- read_licorfile("20210226 PI 50-100 75RH 400CO2 T.xlsx",
+#' dataframe <- read_licorfile("20210226 PI 50-100 75RH 400CO2 T.xlsx",
 #'                          parameters_to_extract)
 #'
-read_licorfile <- function(filename, sheetnumber = 1, parameters = TRUE){
+read_licorfile <- function(filepath,
+                           sheetnumber = 1,
+                           parameters = c(),
+                           numeric = TRUE,
+                           convert = TRUE) {
 
-  #print which file to read
-  print(paste("Reading:", filename))
+  #get the file type
+  filetype <- readxl::format_from_ext(path = filepath)
 
-  #read licor file
-  mydata = data.frame(readxl::read_excel(filename, sheet = sheetnumber, col_names = FALSE))
+  #set the licor name
+  licor <- ""
 
-  #find header
-  headerrow = which(mydata[1] == 'obs' | mydata[1] == 'Obs')
-  header = mydata[c(headerrow), ]
+  #read the first line dendend on the type
+  if (is.na(filetype) | filetype == "txt") {
 
-  #skip head
-  skiplines = headerrow + 1
-  mydata <- mydata[-c(1:skiplines), ]
+    #read the first line
+    con <- file(filepath, "r")
+    first_line <- readLines(con, n=1)
+    close(con)
 
-  #set header
-  colnames(mydata) = header
+    #set the licor number
+    licor = get_licor_number(first_line)
 
-  #check if it is a Li6400 or Li6800
-  if (header[1] == 'obs') {
-    licormachine <- "LI-6800"
-  } else if (header[1] == 'Obs') {
-    licormachine <- "LI-6400"
+  } else if (filetype == "xlsx") {
+
+    #read the first line
+    first_line <- readxl::read_xlsx(path = filepath,
+                                    sheet = sheetnumber,
+                                    col_names = FALSE,
+                                    n_max = 1)
+
+    #set the licor number
+    licor = get_licor_number(first_line)
+
+  } else if (filetype == "xls") {
+
+    #ofthen results in errors, so it is in a try catch
+    tryCatch(
+      {
+        #read the first line
+        first_line <- readxl::read_xls(path = filepath,
+                                       sheet = sheetnumber,
+                                       col_names = FALSE,
+                                       n_max = 1)
+
+        #set the licor number
+        licor = get_licor_number(first_line)
+
+
+      },
+      error = function(e) {
+        stop(paste("read xls gave the following error:", e,
+                   " Known issue,
+                   look at https://github.com/tidyverse/readxl/issues/598 \n
+                   try opening in excel and saving to new format xlsx"))
+        return("error")
+      }
+    )
+
+  } else if (filetype == "csv") {
+
+    #read the first line
+    first_line <- read.csv(file = filepath,
+                           col_names = FALSE,
+                           nrows = 1)
+
+    #set the licor number
+    licor = get_licor_number(first_line)
+
   } else {
-    licormachine <- "unkown"
+    #if it is none of the above file types give an error
+    stop("Wrong file type: File is not a 6800 licorfile,
+         try to save it as an .xlsx file")
   }
 
-  #print if it is a 6400 or a 6800 file
-  print(licormachine)
-
-  #for a Li6400 files
-  if (licormachine == "LI-6400") {
-    #remove remarks
-    remarklist <- which(mydata[1] == 'Remark=')
-    mydata <- mydata[-remarklist, ]
-    #change PARi to Qin
-    names(mydata)[names(mydata) == 'PARi'] <- 'Qin'
-    #change Photo to A
-    names(mydata)[names(mydata) == 'Photo'] <- 'A'
-    #calculate elapsed
-    mydata$elapsed <- (as.numeric(mydata$FTime) - as.numeric(mydata$FTime[1]))
+  #call the right reading function dependent on the licor number
+  if (licor == "6800") {
+    #read the licor 6800 file
+    dataframe <- read_licorfile_6800(filepath = filepath,
+                                     parameters = parameters,
+                                     numeric = numeric)
+  } else if (licor == "6400") {
+    #read the licor 6400 file
+    dataframe <- read_licorfile_6400(filepath = filepath,
+                                     parameters = parameters,
+                                     convert = convert,
+                                     numeric = numeric)
+  } else {
+    #give an error if the licorfile is not correct
+    stop("No licor type found in the first line")
   }
 
-  #Select parameters if they are included
-  mydata <- extract_parameters(mydata, parameters)
+  #return the right dataframe
+  return(dataframe)
+}
 
-  #change all columns to numeric
-  mydata <- numeric_dataframe(mydata)
+get_licor_number <- function(first_line) {
 
-  return(mydata)
+  #check if it is an Licor 6400 or 6800
+  if (grepl("OPEN", first_line)) {
+    print("Licor 6400 file")
+    licor = "6400"
+
+  } else if (grepl("Header", first_line) | grepl("SysConst", first_line[[1]])) {
+    print("Licor 6800 file")
+    licor = "6800"
+
+  } else {
+    stop("No licor type found in the first line")
+  }
+
+  #return the licor number
+  return(licor)
 }

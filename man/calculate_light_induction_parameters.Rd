@@ -5,7 +5,7 @@
 \title{A function that calculates the light incuction parameters
 of a single file.}
 \usage{
-calculate_light_induction_parameters(dataframe, min_stepsize = 5)
+calculate_light_induction_parameters(dataframe, min_stepsize = 10)
 }
 \arguments{
 \item{dataframe}{A dataframe from which to calculate the light parameters.}

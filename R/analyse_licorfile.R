@@ -25,7 +25,7 @@ analyse_licorfile <- function(pathname,
                               plot_individuals = TRUE) {
 
   #read the licor file
-  dataframe <- read_licorfile(filename = pathname, parameters = parameters)
+  dataframe <- read_licorfile(filepath = pathname, parameters = parameters)
 
   #make an empty list
   mean_list <- list()
@@ -62,7 +62,7 @@ analyse_licorfile <- function(pathname,
   #add all the normalized data
   for (i in names(dataframe[!names(dataframe) %in% x_axis])) {
     column <- dataframe[[i]]
-    normalized_dataframe[i] <- normalize_column(column)
+    normalized_dataframe[i] <- normalize_column(column, na.rm = TRUE)
   }
 
   #remove the excluded

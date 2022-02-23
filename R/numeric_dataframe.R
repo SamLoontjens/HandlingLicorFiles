@@ -15,7 +15,7 @@
 numeric_dataframe <- function(dataframe){
 
   #apply to all the columns of dataframe the function as.numeric
-  dataframe <- as.data.frame(apply(dataframe, 2, as.numeric))
+  dataframe <- as.data.frame(suppressWarnings(apply(dataframe, 2, as.numeric)))
 
   return(dataframe)
 }

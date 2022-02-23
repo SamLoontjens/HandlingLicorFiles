@@ -139,8 +139,13 @@ fit_any_curve <- function(x,
       #show the current plot
       print(current_plot)
 
-      print(paste("Fit gave an", model, "(ENTER)"))
-      user_input <- readline()
+      print(paste("Fit gave an", model, "(type 'quit' to stop the loop)"))
+      user_input <- readline("(ENTER):")
+
+      #if the user input is quit then stop the loop
+      if (user_input == "quit") {
+        stop("User quit the loop")
+      }
     }
 
     #fitstate is warning or error
@@ -192,8 +197,13 @@ fit_any_curve <- function(x,
       print(current_plot)
 
       #ask user to check if the model is a good fit
-      print("Is is a good fit? ([Y]es/[N]o)")
-      user_input <- readline()
+      print("Is is a good fit? (type 'quit' to stop the loop)")
+      user_input <- readline("([Y]es/[N]o):")
+
+      #if the user input is quit then stop the loop
+      if (user_input == "quit") {
+        stop("User quit the loop")
+      }
 
       if (user_input == "Y" | user_input == "y") {
 

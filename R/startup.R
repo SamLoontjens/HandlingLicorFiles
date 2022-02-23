@@ -13,7 +13,8 @@
 startup <- function(){
 
   #load all required packages
-  packages = c("ggplot2", "readxl", "writexl", "dplyr", "rstudioapi", "reshape2")
+  packages = c("ggplot2", "readr", "readxl", "writexl", "dplyr", "rstudioapi", "reshape2")
+
   install_load_packages(packages)
 
   #Set working directory to source directory

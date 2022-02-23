@@ -43,6 +43,8 @@ fit_light_response_curve <- function(dataframe,
   Pmax = max(Pn)
   curvature = 0.67
   start_parameter_list <- list(Rd = Rd, alpha = alpha, Pmax = Pmax, curvature = curvature)
+  lower_bounds <- c(-20, 0.01, 1, 0.001)
+  upper_bounds <- c(20, 10, 100, 0.999)
 
   #make formula for fitting
   LRCformula <- as.formula(Pn ~ -Rd + (alpha * PPF + Pmax - sqrt((alpha * PPF + Pmax)^2 - 4 * curvature * PPF * Pmax * alpha))/(2 * curvature))
@@ -57,7 +59,9 @@ fit_light_response_curve <- function(dataframe,
                                   subtitle = subtitle,
                                   manual_check = manual_check,
                                   save_plot = save_plot,
-                                  save_path = save_path)
+                                  save_path = save_path,
+                                  lower_bounds = lower_bounds,
+                                  upper_bounds = upper_bounds)
 
   #get  the parameters from the fit to calculate the light_compensation point
   fit_state = fit_parameters[[1]]
